@@ -23,17 +23,16 @@ class MainWindows(QMainWindow):
         videos = self.yt.streams.all()
         dn_video = videos[self.current_row]
         dn_video.download()
-        self.label_3.setText('Pobrałem!')
+        self.label_3.setText('Done and done')
 
     def select_version(self):
         self.current_row = self.listWidget.currentRow()
-        print(self.current_row)
 
     def clear_button(self):
         self.listWidget.clear()
         self.listWidget.setEnabled(False)
         self.dl_Button.setEnabled(False)
-        self.label_3.setText('Wyczyściłem')
+        self.label_3.setText('Its clear!')
 
     def go_button_click(self):
         self.dl_Button.setEnabled(True)
@@ -42,14 +41,14 @@ class MainWindows(QMainWindow):
         try:
             self.yt = YouTube(link)
         except:
-            self.label_3.setText('Jakiś dziwny ten link, sprawdź go')
+            self.label_3.setText('Weird link...')
         else:
             try:
                 videos = self.yt.streams.all()
             except:
-                self.label_3.setText('Nie odnaleziono plików, sprawdz link')
+                self.label_3.setText('I found nothing.')
             else:
-                self.label_3.setText('Zobacz co znalazłem')
+                self.label_3.setText('Look what i found')
                 video = list(enumerate(videos))
                 self.listWidget.setEnabled(True)
                 for i in video:
@@ -64,5 +63,4 @@ def main():
 
 
 if __name__ == '__main__':
-
     main()
