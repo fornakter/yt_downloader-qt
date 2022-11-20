@@ -1,6 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QLineEdit
 from pytube import YouTube
+import requests
 
 
 class UiYourTube(object):
@@ -70,17 +71,26 @@ class UiYourTube(object):
         yourtube.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(yourtube)
         self.statusbar.setObjectName("statusbar")
-        self.statusbar.showMessage('ok')
         yourtube.setStatusBar(self.statusbar)
-
         self.retranslateUi(yourtube)
         QtCore.QMetaObject.connectSlotsByName(yourtube)
+
+    def check_net(self):
+        timeout = 1
+        try:
+            requests.head("http://www.google.com/", timeout=timeout)
+            self.label_3.setText('Internet works')
+            self.statusbar.showMessage('Internet works')
+        except requests.ConnectionError:
+            self.label_3.setText('I have problem with internet.')
+            self.statusbar.showMessage('Internet connections problem.')
 
     def select_version(self):
         self.current_row = self.listWidget.currentRow()
         self.dl_Button.setEnabled(True)
 
     def download_button(self):
+        self.check_net()
         videos = self.yt.streams.all()
         dn_video = videos[self.current_row]
         # dn_str = str(dn_video)
@@ -95,7 +105,7 @@ class UiYourTube(object):
         self.label_3.setText('Its clear!')
 
     def go_button_click(self):
-        self.statusbar.showMessage('Loading...')
+        self.check_net()
         self.listWidget.clear()
         link = self.lineEdit.text()
         try:
