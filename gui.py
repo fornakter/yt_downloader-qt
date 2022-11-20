@@ -1,21 +1,25 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QWidget, QLineEdit
 from pytube import YouTube
 
 
 class UiYourTube(object):
+    lineEdit: QLineEdit
+    centralwidget: QWidget
     file_list = []
     current_row = None
     yt = None
 
-    def setupUi(self, YourTube):
-        YourTube.setObjectName("YourTube")
-        YourTube.resize(864, 502)
-        self.centralwidget = QtWidgets.QWidget(YourTube)
+    def setupUi(self, yourtube):
+        yourtube.setObjectName("YourTube")
+        yourtube.resize(864, 502)
+        self.centralwidget = QtWidgets.QWidget(yourtube)
         self.centralwidget.setObjectName("centralwidget")
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
         self.lineEdit.setGeometry(QtCore.QRect(20, 30, 601, 31))
         self.lineEdit.setText("")
         self.lineEdit.setObjectName("lineEdit")
+        self.lineEdit.returnPressed.connect(self.go_button_click)
         self.label = QtWidgets.QLabel(self.centralwidget)
         self.label.setGeometry(QtCore.QRect(20, 10, 71, 16))
         self.label.setObjectName("label")
@@ -59,24 +63,27 @@ class UiYourTube(object):
         self.pushButton.setGeometry(QtCore.QRect(412, 420, 131, 31))
         self.pushButton.setObjectName("pushButton")
         self.pushButton.clicked.connect(self.clear_button)
-        YourTube.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(YourTube)
+        yourtube.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(yourtube)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 864, 26))
         self.menubar.setObjectName("menubar")
-        YourTube.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(YourTube)
+        yourtube.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(yourtube)
         self.statusbar.setObjectName("statusbar")
-        YourTube.setStatusBar(self.statusbar)
+        self.statusbar.showMessage('ok')
+        yourtube.setStatusBar(self.statusbar)
 
-        self.retranslateUi(YourTube)
-        QtCore.QMetaObject.connectSlotsByName(YourTube)
+        self.retranslateUi(yourtube)
+        QtCore.QMetaObject.connectSlotsByName(yourtube)
 
     def select_version(self):
         self.current_row = self.listWidget.currentRow()
+        self.dl_Button.setEnabled(True)
 
     def download_button(self):
         videos = self.yt.streams.all()
         dn_video = videos[self.current_row]
+        # dn_str = str(dn_video)
         dn_video.download()
         self.label_3.setText('Done and done')
 
@@ -84,10 +91,11 @@ class UiYourTube(object):
         self.listWidget.clear()
         self.listWidget.setEnabled(False)
         self.dl_Button.setEnabled(False)
+        self.lineEdit.setText("")
         self.label_3.setText('Its clear!')
 
     def go_button_click(self):
-        self.dl_Button.setEnabled(True)
+        self.statusbar.showMessage('Loading...')
         self.listWidget.clear()
         link = self.lineEdit.text()
         try:
@@ -100,7 +108,7 @@ class UiYourTube(object):
             except:
                 self.label_3.setText('I found nothing.')
             else:
-                self.label_3.setText('Look what i found')
+                self.label_3.setText('Look what i found, ' + str(len(videos)) + ' files')
                 video = list(enumerate(videos))
                 self.listWidget.setEnabled(True)
                 for i in video:
@@ -126,6 +134,7 @@ if __name__ == "__main__":
     import sys
 
     app = QtWidgets.QApplication(sys.argv)
+    app.setWindowIcon(QtGui.QIcon(r'img/icon.PNG'))
     YourTube = QtWidgets.QMainWindow()
     ui = UiYourTube()
     ui.setupUi(YourTube)
