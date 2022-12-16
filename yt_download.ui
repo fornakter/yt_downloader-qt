@@ -185,6 +185,31 @@
      <string>Clear</string>
     </property>
    </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>80</y>
+      <width>221</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="maximum">
+     <number>10</number>
+    </property>
+    <property name="value">
+     <number>3</number>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
+    <property name="textVisible">
+     <bool>true</bool>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

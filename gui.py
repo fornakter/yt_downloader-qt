@@ -79,23 +79,23 @@ class UiYourTube(object):
         timeout = 1
         try:
             requests.head("http://www.google.com/", timeout=timeout)
-            self.label_3.setText('Internet works')
             self.statusbar.showMessage('Internet works')
+            return True
         except requests.ConnectionError:
-            self.label_3.setText('I have problem with internet.')
             self.statusbar.showMessage('Internet connections problem.')
+            return False
 
     def select_version(self):
         self.current_row = self.listWidget.currentRow()
         self.dl_Button.setEnabled(True)
 
     def download_button(self):
-        self.check_net()
-        videos = self.yt.streams.all()
-        dn_video = videos[self.current_row]
-        # dn_str = str(dn_video)
-        dn_video.download()
-        self.label_3.setText('Done and done')
+        if self.check_net():
+            videos = self.yt.streams.all()
+            dn_video = videos[self.current_row]
+            dn_str = str(dn_video)
+            dn_video.download()
+            self.label_3.setText('Done and done')
 
     def clear_button(self):
         self.listWidget.clear()
@@ -105,25 +105,25 @@ class UiYourTube(object):
         self.label_3.setText('Its clear!')
 
     def go_button_click(self):
-        self.check_net()
-        self.listWidget.clear()
-        link = self.lineEdit.text()
-        try:
-            self.yt = YouTube(link)
-        except:
-            self.label_3.setText('Weird link...')
-        else:
+        if self.check_net():
+            self.listWidget.clear()
+            link = self.lineEdit.text()
             try:
-                videos = self.yt.streams.all()
+                self.yt = YouTube(link)
             except:
-                self.label_3.setText('I found nothing.')
+                self.label_3.setText('Weird link...')
             else:
-                self.label_3.setText('Look what i found, ' + str(len(videos)) + ' files')
-                video = list(enumerate(videos))
-                self.listWidget.setEnabled(True)
-                for i in video:
-                    self.file_list.append(i)
-                    self.listWidget.addItem(str(i[1]))
+                try:
+                    videos = self.yt.streams.all()
+                except:
+                    self.label_3.setText('I found nothing.')
+                else:
+                    self.label_3.setText('Look what i found, ' + str(len(videos)) + ' files')
+                    video = list(enumerate(videos))
+                    self.listWidget.setEnabled(True)
+                    for i in video:
+                        self.file_list.append(i)
+                        self.listWidget.addItem(str(i[1]))
 
     def retranslateUi(self, yourtube):
         _translate = QtCore.QCoreApplication.translate
