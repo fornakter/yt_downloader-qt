@@ -133,3 +133,6 @@ main.exe
 .build/
 .dist/
 gui.exe
+YourTube.py
+icon.ico
+icon.png
