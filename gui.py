@@ -11,9 +11,13 @@ class UiYourTube(object):
     current_row = None
     yt = None
 
+
     def setupUi(self, yourtube):
+
         yourtube.setObjectName("YourTube")
-        yourtube.resize(864, 502)
+        yourtube.resize(860, 490)
+        yourtube.setMaximumSize(QtCore.QSize(860, 490))
+        yourtube.setMinimumSize(QtCore.QSize(860, 490))
         self.centralwidget = QtWidgets.QWidget(yourtube)
         self.centralwidget.setObjectName("centralwidget")
         self.lineEdit = QtWidgets.QLineEdit(self.centralwidget)
@@ -45,16 +49,16 @@ class UiYourTube(object):
         self.groupBox.setGeometry(QtCore.QRect(20, 70, 341, 51))
         self.groupBox.setObjectName("groupBox")
         self.radioButton_2 = QtWidgets.QRadioButton(self.groupBox)
-        self.radioButton_2.setEnabled(False)
+        self.radioButton_2.setEnabled(True)
         self.radioButton_2.setGeometry(QtCore.QRect(10, 20, 95, 20))
         self.radioButton_2.setChecked(True)
         self.radioButton_2.setObjectName("radioButton_2")
         self.radioButton_3 = QtWidgets.QRadioButton(self.groupBox)
-        self.radioButton_3.setEnabled(False)
+        self.radioButton_3.setEnabled(True)
         self.radioButton_3.setGeometry(QtCore.QRect(110, 20, 95, 20))
         self.radioButton_3.setObjectName("radioButton_3")
         self.radioButton = QtWidgets.QRadioButton(self.groupBox)
-        self.radioButton.setEnabled(False)
+        self.radioButton.setEnabled(True)
         self.radioButton.setGeometry(QtCore.QRect(230, 20, 95, 20))
         self.radioButton.setObjectName("radioButton")
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
@@ -71,6 +75,7 @@ class UiYourTube(object):
         yourtube.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(yourtube)
         self.statusbar.setObjectName("statusbar")
+        self.statusbar.showMessage('v. 1.0')
         yourtube.setStatusBar(self.statusbar)
         self.retranslateUi(yourtube)
         QtCore.QMetaObject.connectSlotsByName(yourtube)
@@ -114,7 +119,13 @@ class UiYourTube(object):
                 self.label_3.setText('Weird link...')
             else:
                 try:
-                    videos = self.yt.streams.all()
+                    if self.radioButton_2.isChecked():
+                        videos = self.yt.streams
+                    if self.radioButton_3.isChecked():
+                        videos = self.yt.streams.filter(only_video=True)
+                    if self.radioButton.isChecked():
+                        videos = self.yt.streams.filter(only_audio=True)
+
                 except:
                     self.label_3.setText('I found nothing.')
                 else:
