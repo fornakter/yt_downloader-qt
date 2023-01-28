@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QWidget, QLineEdit
 from pytube import YouTube
 import requests
+import threading
 
 
 class UiYourTube(object):
@@ -10,7 +11,6 @@ class UiYourTube(object):
     file_list = []
     current_row = None
     yt = None
-
 
     def setupUi(self, yourtube):
 
@@ -109,7 +109,7 @@ class UiYourTube(object):
         self.lineEdit.setText("")
         self.label_3.setText('Its clear!')
 
-    def go_button_click(self):
+    def load_data(self):
         if self.check_net():
             self.listWidget.clear()
             link = self.lineEdit.text()
@@ -135,6 +135,10 @@ class UiYourTube(object):
                     for i in video:
                         self.file_list.append(i)
                         self.listWidget.addItem(str(i[1]))
+
+    def go_button_click(self):
+        threading.Thread(target=self.load_data).start()
+        self.label_3.setText('Just wait a secound...')
 
     def retranslateUi(self, yourtube):
         _translate = QtCore.QCoreApplication.translate
