@@ -75,7 +75,7 @@ class UiYourTube(object):
         yourtube.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(yourtube)
         self.statusbar.setObjectName("statusbar")
-        self.statusbar.showMessage('v. 1.0')
+        self.statusbar.showMessage('v. 1.1')
         yourtube.setStatusBar(self.statusbar)
         self.retranslateUi(yourtube)
         QtCore.QMetaObject.connectSlotsByName(yourtube)
@@ -110,6 +110,7 @@ class UiYourTube(object):
         self.label_3.setText('Its clear!')
 
     def load_data(self):
+
         if self.check_net():
             self.listWidget.clear()
             link = self.lineEdit.text()
@@ -135,8 +136,10 @@ class UiYourTube(object):
                     for i in video:
                         self.file_list.append(i)
                         self.listWidget.addItem(str(i[1]))
+        self.go_button.setEnabled(True)
 
     def go_button_click(self):
+        self.go_button.setEnabled(False)
         threading.Thread(target=self.load_data).start()
         self.label_3.setText('Just wait a secound...')
 
