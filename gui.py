@@ -81,6 +81,7 @@ class UiYourTube(object):
         QtCore.QMetaObject.connectSlotsByName(yourtube)
 
     def check_net(self):
+        # Check internet connection and rise errors
         timeout = 1
         try:
             requests.head("http://www.google.com/", timeout=timeout)
@@ -95,6 +96,7 @@ class UiYourTube(object):
         self.dl_Button.setEnabled(True)
 
     def download_button(self):
+        # Download selected file
         if self.check_net():
             videos = self.yt.streams.all()
             dn_video = videos[self.current_row]
@@ -114,11 +116,13 @@ class UiYourTube(object):
         if self.check_net():
             self.listWidget.clear()
             link = self.lineEdit.text()
+            # Try to open file from url
             try:
                 self.yt = YouTube(link)
             except:
                 self.label_3.setText('Weird link...')
             else:
+                # the link works but the file may be blocked
                 try:
                     if self.radioButton_2.isChecked():
                         videos = self.yt.streams
@@ -140,6 +144,7 @@ class UiYourTube(object):
 
     def go_button_click(self):
         self.go_button.setEnabled(False)
+        # Load data on background
         threading.Thread(target=self.load_data).start()
         self.label_3.setText('Just wait a secound...')
 
