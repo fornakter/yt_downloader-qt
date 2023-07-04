@@ -10,7 +10,7 @@ Select the appropriate file from the list\
 Click 'Download'
 
 File will be downloaded to folder when YourTube.exe is\
-If You need, You can click 'Clear' button, when You need it\
+You can click 'Clear' button, when You need it\
 Aplication check on background internet connection.
 
 When internet doesn't work, you will be informed about it.
